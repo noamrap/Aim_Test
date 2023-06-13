@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #ff0000;
+            margin-top: 50px;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #0000ff;
+            margin-top: 20px;
+        }
+
+        button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #00ff00;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #ff00ff;
+                color: #ffffff;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+
+        #newButton {
+            display: none;
+        }
+
+        #timer {
+            font-size: 20px;
+            color: #000000;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        של נועם רפופורט AIM  מבחן ה
+    </h1>
+    <h3>תלחץ על הכפתור הזז כמה שיותר מהר</h3>
+    <button id="mainButton" onclick="startGame()">התחל</button>
+
+    <div id="timer">זמן: 0 שניות</div>
+
+    <script src="script.js"></script>
+    <script>
+        var clickCount = 0;
+        var startTime;
+
+        function startGame() {
+            if (clickCount === 0) {
+                startTime = new Date().getTime();
+                setInterval(updateTimer, 1000);
+            }
+
+            moveButton();
+        }
+
+        function moveButton() {
+            var mainButton = document.getElementById("mainButton");
+            mainButton.style.top = Math.floor(Math.random() * (window.innerHeight - 100)) + "px";
+            mainButton.style.left = Math.floor(Math.random() * (window.innerWidth - 100)) + "px";
+
+            clickCount++;
+
+            if (clickCount === 8) {
+                openVideo();
+            }
+        }
+
+        function updateTimer() {
+            var currentTime = new Date().getTime();
+            var timeElapsed = Math.floor((currentTime - startTime) / 1000);
+            document.getElementById("timer").textContent = "זמן: " + timeElapsed + " שניות";
+        }
+
+        function openVideo() {
+            window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley");
+        }
+
+        function showConfirmation() {
+            var newButton = document.createElement("button");
+            newButton.id = "newButton";
+            newButton.innerText = "Are you sure?";
+
+            var yesButton = document.createElement("button");
+            yesButton.innerText = "Yes";
+            yesButton.onclick = function () {
+                alert("Congratulations! You won!");
+                location.reload();
+            };
+
+            var noButton = document.createElement("button");
+            noButton.innerText = "No";
+            noButton.onclick = function () {
+                document.getElementById("newButton").style.display = "none";
+            };
+
+            newButton.appendChild(yesButton);
+            newButton.appendChild(noButton);
+            document.body.appendChild(newButton);
+
+            var mainButton = document.getElementById("mainButton");
+            mainButton.removeEventListener("click", showConfirmation);
+        }
+
+        document.getElementById("mainButton").addEventListener("click", showConfirmation);
+    </script>
+</body>
+</html>
